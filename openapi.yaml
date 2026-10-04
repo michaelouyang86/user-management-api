@@ -1,0 +1,368 @@
+openapi: 3.0.1
+
+info:
+  title: User Management API
+  description: API for managing users and uploading images
+  version: 1.0.0
+
+servers:
+  - url: https://api.example.com
+    description: Development server
+
+tags:
+  - name: Users
+    description: User management operations
+  - name: Images
+    description: Image upload operations
+
+paths:
+
+  # ============================================================
+  # Users
+  # ============================================================
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      operationId: getUsers
+
+      responses:
+        "200":
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                required:
+                  - users
+
+          "500":
+            description: Internal server error
+
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      operationId: createUser
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+        "400":
+          description: Invalid request
+
+        "500":
+          description: Internal server error
+
+  # ============================================================
+  # User by ID
+  # ============================================================
+
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: UUID of the user
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags:
+        - Users
+      summary: Get a user by ID
+      operationId: getUserById
+
+      responses:
+        "200":
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+        "404":
+          description: User not found
+
+        "500":
+          description: Internal server error
+
+    put:
+      tags:
+        - Users
+      summary: Update a user
+      operationId: updateUser
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+        "400":
+          description: Invalid request
+
+        "404":
+          description: User not found
+
+        "500":
+          description: Internal server error
+
+    delete:
+      tags:
+        - Users
+      summary: Delete a user
+      operationId: deleteUser
+
+      responses:
+        "204":
+          description: User deleted successfully
+
+        "404":
+          description: User not found
+
+        "500":
+          description: Internal server error
+
+  # ============================================================
+  # Images
+  # ============================================================
+
+  /images/url:
+    get:
+      tags:
+        - Images
+      summary: Generate a presigned image download URL
+      operationId: generateImageDownloadUrl
+
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: S3 object key of the image
+          schema:
+            type: string
+          example: users/images/550e8400-e29b-41d4-a716-446655440000.jpg
+
+      responses:
+        "200":
+          description: Presigned image download URL generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageDownloadResponse"
+
+        "404":
+          description: Image not found
+
+        "500":
+          description: Internal server error
+
+    post:
+      tags:
+        - Images
+      summary: Generate a image upload URL
+      operationId: generateImageUploadUrl
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageUploadRequest"
+
+      responses:
+        "201":
+          description: Presigned upload URL generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageUploadResponse"
+
+        "400":
+          description: Unsupported image content type
+
+        "500":
+          description: Internal server error
+
+# ==============================================================
+# Components
+# ==============================================================
+
+components:
+
+  schemas:
+
+    User:
+      type: object
+      required:
+        - user_id
+        - first_name
+        - last_name
+        - email
+        - image_keys
+        - created_at
+
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          description: Unique identifier of the user
+          example: "1919f2e7-d3ba-4160-886e-f374da39e6cc"
+
+        first_name:
+          type: string
+          description: User's first name
+          example: Michael
+
+        last_name:
+          type: string
+          description: User's last name
+          example: Ouyang
+
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: michael@example.com
+
+        image_keys:
+          type: array
+          description: S3 object keys of the user's images
+          items:
+            type: string
+          example:
+            - "users/images/2bd67aa7-cde1-4793-8bd4-c6ae744f51b3.jpg"
+
+        created_at:
+          type: string
+          format: date-time
+          description: User creation timestamp
+          example: "2026-09-13T08:00:00Z"
+
+    CreateUserRequest:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+
+      properties:
+        first_name:
+          type: string
+          example: Michael
+
+        last_name:
+          type: string
+          example: Ouyang
+
+        email:
+          type: string
+          format: email
+          example: michael@example.com
+
+        image_keys:
+          type: array
+          description: S3 object keys of uploaded images
+          items:
+            type: string
+          default: []
+
+    UpdateUserRequest:
+      type: object
+
+      properties:
+        first_name:
+          type: string
+          example: Michael
+
+        last_name:
+          type: string
+          example: Ouyang
+
+        email:
+          type: string
+          format: email
+          example: michael@example.com
+
+        image_keys:
+          type: array
+          items:
+            type: string
+
+    ImageDownloadResponse:
+      type: object
+      required:
+        - image_key
+        - download_url
+      properties:
+        image_key:
+          type: string
+          example: users/images/550e8400-e29b-41d4-a716-446655440000.jpg
+
+        download_url:
+          type: string
+          format: uri
+          description: Presigned URL for downloading the image
+
+    ImageUploadRequest:
+      type: object
+      required:
+        - content_type
+
+      properties:
+        content_type:
+          type: string
+          description: MIME type of the image
+          enum:
+            - image/jpeg
+            - image/png
+            - image/webp
+          example: image/jpeg
+
+    ImageUploadResponse:
+      type: object
+      required:
+        - image_key
+        - upload_url
+
+      properties:
+        image_key:
+          type: string
+          description: Object key for the image
+          example: users/images/2bd67aa7-cde1-4793-8bd4-c6ae744f51b3.jpg
+
+        upload_url:
+          type: string
+          format: uri
+          description: URL for uploading the image
+          example: https://example.com/upload/image.jpg

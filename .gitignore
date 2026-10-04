@@ -1,0 +1,11 @@
+# Build output (regenerate with npm run build && npm run package)
+dist/
+
+# Dependencies
+node_modules/
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+terraform.tfvars

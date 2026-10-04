@@ -1,0 +1,28 @@
+{
+  "name": "user-management-api",
+  "version": "1.0.0",
+  "description": "a simple user management system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
+    "build": "node scripts/build.js",
+    "package": "node scripts/package.js"
+  },
+  "keywords": [],
+  "author": "michaelouyang",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1124.0",
+    "@aws-sdk/client-s3": "^3.1124.0",
+    "@aws-sdk/s3-request-presigner": "^3.1125.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.163",
+    "@types/node": "^26.4.1",
+    "archiver": "^8.0.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}
