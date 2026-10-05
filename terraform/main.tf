@@ -16,7 +16,7 @@ provider "aws" {
 module "iam" {
   source = "./iam"
 
-  aws_region = var.aws_region
+  aws_region               = var.aws_region
   users_dynamodb_table_arn = aws_dynamodb_table.users.arn
-  users_s3_bucket_arn = aws_s3_bucket.user_management_api.arn
+  users_s3_bucket_arn      = aws_s3_bucket.user_management_api.arn
 }

@@ -1,11 +1,11 @@
 locals {
   user_lambda_environment = {
-    TABLE_NAME = aws_dynamodb_table.users.name
+    TABLE_NAME     = aws_dynamodb_table.users.name
     ALLOWED_ORIGIN = var.allowed_origin
   }
 
   image_lambda_environment = {
-    BUCKET_NAME = aws_s3_bucket.user_management_api.bucket
+    BUCKET_NAME    = aws_s3_bucket.user_management_api.bucket
     ALLOWED_ORIGIN = var.allowed_origin
   }
 }
