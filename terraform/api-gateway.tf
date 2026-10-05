@@ -4,13 +4,13 @@ locals {
   )
 
   lambda_integration_uri = {
-    user_get = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_get.arn}/invocations"
-    user_get_by_id = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_get_by_id.arn}/invocations"
-    user_create = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_create.arn}/invocations"
-    user_update = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_update.arn}/invocations"
-    user_delete = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_delete.arn}/invocations"
+    user_get                    = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_get.arn}/invocations"
+    user_get_by_id              = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_get_by_id.arn}/invocations"
+    user_create                 = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_create.arn}/invocations"
+    user_update                 = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_update.arn}/invocations"
+    user_delete                 = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.user_delete.arn}/invocations"
     image_generate_download_url = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.image_generate_download_url.arn}/invocations"
-    image_generate_upload_url = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.image_generate_upload_url.arn}/invocations"
+    image_generate_upload_url   = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.image_generate_upload_url.arn}/invocations"
   }
 
   # API Gateway CORS preflight
@@ -65,7 +65,7 @@ locals {
             statusCode = "200"
 
             responseParameters = {
-              "method.response.header.Access-Control-Allow-Origin" = "'${var.allowed_origin}'"
+              "method.response.header.Access-Control-Allow-Origin"  = "'${var.allowed_origin}'"
               "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE'"
               "method.response.header.Access-Control-Allow-Headers" = "'Content-Type'"
             }
@@ -230,8 +230,8 @@ resource "aws_api_gateway_stage" "dev" {
 
 # Lambda permissions for API Gateway to invoke the Lambda functions
 resource "aws_lambda_permission" "user_get" {
-  statement_id  = "AllowApiGatewayInvoke"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowApiGatewayInvoke"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.user_get.function_name
 
@@ -241,8 +241,8 @@ resource "aws_lambda_permission" "user_get" {
 }
 
 resource "aws_lambda_permission" "user_get_by_id" {
-  statement_id  = "AllowApiGatewayInvoke"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowApiGatewayInvoke"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.user_get_by_id.function_name
 
@@ -252,8 +252,8 @@ resource "aws_lambda_permission" "user_get_by_id" {
 }
 
 resource "aws_lambda_permission" "user_create" {
-  statement_id  = "AllowApiGatewayInvoke"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowApiGatewayInvoke"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.user_create.function_name
 
@@ -263,8 +263,8 @@ resource "aws_lambda_permission" "user_create" {
 }
 
 resource "aws_lambda_permission" "user_update" {
-  statement_id  = "AllowApiGatewayInvoke"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowApiGatewayInvoke"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.user_update.function_name
 
@@ -274,8 +274,8 @@ resource "aws_lambda_permission" "user_update" {
 }
 
 resource "aws_lambda_permission" "user_delete" {
-  statement_id  = "AllowApiGatewayInvoke"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowApiGatewayInvoke"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.user_delete.function_name
 
@@ -285,8 +285,8 @@ resource "aws_lambda_permission" "user_delete" {
 }
 
 resource "aws_lambda_permission" "image_generate_download_url" {
-  statement_id  = "AllowApiGatewayInvoke"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowApiGatewayInvoke"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.image_generate_download_url.function_name
 
@@ -296,8 +296,8 @@ resource "aws_lambda_permission" "image_generate_download_url" {
 }
 
 resource "aws_lambda_permission" "image_generate_upload_url" {
-  statement_id  = "AllowApiGatewayInvoke"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowApiGatewayInvoke"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.image_generate_upload_url.function_name
 
